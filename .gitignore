@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Coverage
+coverage/
+
+# Logs
+npm-debug.log*
+*.log
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Editor configurations
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+package-lock.json
+
+# --- Local dev credential seed ---------------------------------------------
+# This file holds real OAuth2 tokens / API keys once a developer seeds it.
+# It must NEVER be committed. Copy credentials.seed.example.json to get started.
+credentials.seed.json
+credentials.seed.json.tmp-*
