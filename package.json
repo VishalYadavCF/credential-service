@@ -18,7 +18,8 @@
     "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
     "test": "jest --passWithNoTests --coverage --ci --maxWorkers=2",
     "test:local": "jest --passWithNoTests --coverage --maxWorkers=2",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "seed": "node scripts/seed-from-ui-payload.js"
   },
   "dependencies": {
     "@nestjs/common": "11.0.15",

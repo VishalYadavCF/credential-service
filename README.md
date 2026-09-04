@@ -164,3 +164,33 @@ npm test            # jest, with coverage
 - **Never logs secret values** — only credential ids, node names, auth types, and (for the
   inventory endpoint) auth object *key names*. Covered by a test that asserts a seeded token
   string never appears in captured logger output.
+
+## Seeding from a merchant-UI payload
+
+The merchant UI's credential-creation API takes a flat `attributes: [{key, value}]` list. This service
+serves the **read** shape ap-executor consumes (`auth: { type, props }`). To convert one into the other:
+
+```bash
+npm run seed -- path/to/payload.json <credentialId> [--merchant 1000]
+```
+
+It flattens `attributes` into `props`, keeps `type` on the auth root (ap-executor rejects a credential
+whose auth has no top-level `type`), merges into `credentials.seed.json` without touching other entries,
+and warns if the token's scopes do not cover what the target piece needs.
+
+### It stamps `claimed_at` and `expires_on` at run time — and this matters
+
+ap-executor's `isOAuth2TokenExpired` reads **`expires_on` only**, and returns `false` when it is absent.
+So a credential with no `expires_on` is treated as never expiring: the proactive refresh never runs, the
+stale access token reaches the piece, and the piece tries to refresh it itself using an OAuth2Client it
+built with tokens but no client credentials. Google replies:
+
+```
+invalid_request  "Could not determine client ID from request."
+```
+
+which looks like a broken credential and is not — the `client_id` is present, it was simply never sent.
+
+Stamping both fields at seed time makes the token genuinely fresh for `expires_in` seconds, so nothing in
+that chain fires. **A token is only good for ~59 minutes; re-run the script to re-stamp before a later
+test.**

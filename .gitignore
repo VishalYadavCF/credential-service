@@ -33,3 +33,16 @@ package-lock.json
 # It must NEVER be committed. Copy credentials.seed.example.json to get started.
 credentials.seed.json
 credentials.seed.json.tmp-*
+
+# Local credential payloads pasted for seeding — these hold REAL access/refresh tokens
+# and client secrets. Never committable.
+tmp/
+*.payload.json
+
+# Backups of the local seed file — same real tokens as credentials.seed.json itself.
+credentials.seed.json.bak-*
+
+# Raw curls copied out of the browser: these carry live merchant-UI bearer JWTs,
+# Google access/refresh tokens and client secrets. Never committable.
+scripts/curls.md
+*.curls.md
